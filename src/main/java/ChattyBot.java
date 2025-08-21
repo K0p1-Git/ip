@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ChattyBot {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+        ArrayList<String> tasks = new ArrayList<>();
 
         System.out.println("____________________________________________________________");
         System.out.println(" Hello! I'm ChattyBot");
@@ -10,20 +12,27 @@ public class ChattyBot {
         System.out.println("____________________________________________________________");
 
         while (true) {
-            String input = scanner.nextLine();
+            String input = sc.nextLine();
 
             if (input.equals("bye")) {
                 System.out.println("____________________________________________________________");
                 System.out.println(" Bye. Hope to see you again soon!");
                 System.out.println("____________________________________________________________");
                 break;
-            } else {
+            } else if (input.equals("list")) {
                 System.out.println("____________________________________________________________");
-                System.out.println(" " + input);
+                for (int i = 0; i < tasks.size(); i++) {
+                    System.out.println(" " + (i + 1) + ". " + tasks.get(i));
+                }
+                System.out.println("____________________________________________________________");
+            } else {
+                tasks.add(input);
+                System.out.println("____________________________________________________________");
+                System.out.println(" added: " + input);
                 System.out.println("____________________________________________________________");
             }
         }
 
-        scanner.close();
+        sc.close();
     }
 }
