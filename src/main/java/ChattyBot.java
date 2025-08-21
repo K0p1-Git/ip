@@ -14,6 +14,24 @@ public class ChattyBot {
         line();
     }
 
+    private static void errorBox(String message) {
+        line();
+        System.out.println(" [Error] " + message);
+        line();
+    }
+
+    private static int parseIndex(String s, int size) throws ChattyException {
+        if (s.isEmpty()) throw new ChattyException("Task number is missing.");
+        int idx;
+        try {
+            idx = Integer.parseInt(s) - 1;
+        } catch (NumberFormatException ex) {
+            throw new ChattyException("Task number must be an integer.");
+        }
+        if (idx < 0 || idx >= size) throw new ChattyException("Task number out of range.");
+        return idx;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
@@ -31,112 +49,86 @@ public class ChattyBot {
                 System.out.println(" Bye. Hope to see you again soon!");
                 line();
                 break;
-            } else if (input.equals("list")) {
-                line();
-                System.out.println(" Here are the tasks in your list:");
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println(" " + (i + 1) + ". " + tasks.get(i));
-                }
-                line();
+            }
 
-            } else if (input.startsWith("mark ")) {
-                try {
-                    int idx = Integer.parseInt(input.substring(5).trim()) - 1;
+            try {
+                if (input.equals("list")) {
+                    line();
+                    System.out.println(" Here are the tasks in your list:");
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println(" " + (i + 1) + ". " + tasks.get(i));
+                    }
+                    line();
+
+                } else if (input.startsWith("mark ")) {
+                    int idx = parseIndex(input.substring(5).trim(), tasks.size());
                     Task t = tasks.get(idx);
                     t.mark();
                     line();
                     System.out.println(" Nice! I've marked this task as done:");
                     System.out.println("   " + t);
                     line();
-                } catch (Exception e) {
-                    line();
-                    System.out.println(" [Error] Please provide a valid task number to mark.");
-                    line();
-                }
 
-            } else if (input.startsWith("unmark ")) {
-                try {
-                    int idx = Integer.parseInt(input.substring(7).trim()) - 1;
+                } else if (input.startsWith("unmark ")) {
+                    int idx = parseIndex(input.substring(7).trim(), tasks.size());
                     Task t = tasks.get(idx);
                     t.unmark();
                     line();
                     System.out.println(" OK, I've marked this task as not done yet:");
                     System.out.println("   " + t);
                     line();
-                } catch (Exception e) {
-                    line();
-                    System.out.println(" [Error] Please provide a valid task number to unmark.");
-                    line();
+
+                } else if (input.equals("todo")) {
+                    throw new EmptyDescriptionException("a todo");
+
+                } else if (input.startsWith("todo ")) {
+                    String desc = input.substring(5).trim();
+                    if (desc.isEmpty()) throw new EmptyDescriptionException("a todo");
+                    Task t = new Todo(desc);
+                    tasks.add(t);
+                    printAdded(t, tasks.size());
+
+                } else if (input.equals("deadline")) {
+                    throw new MalformedArgumentsException("deadline <desc> /by <when>");
+
+                } else if (input.startsWith("deadline ")) {
+                    String rest = input.substring(9).trim();
+                    int at = rest.indexOf("/by");
+                    if (at == -1) throw new MalformedArgumentsException("deadline <desc> /by <when>");
+                    String desc = rest.substring(0, at).trim();
+                    String by = rest.substring(at + 3).trim();
+                    if (desc.isEmpty() || by.isEmpty())
+                        throw new MalformedArgumentsException("deadline <desc> /by <when>");
+                    Task t = new Deadline(desc, by);
+                    tasks.add(t);
+                    printAdded(t, tasks.size());
+
+                } else if (input.equals("event")) {
+                    throw new MalformedArgumentsException("event <desc> /from <start> /to <end>");
+
+                } else if (input.startsWith("event ")) {
+                    String rest = input.substring(6).trim();
+                    int fromIdx = rest.indexOf("/from");
+                    int toIdx = rest.indexOf("/to");
+                    if (fromIdx == -1 || toIdx == -1 || toIdx <= fromIdx)
+                        throw new MalformedArgumentsException("event <desc> /from <start> /to <end>");
+                    String desc = rest.substring(0, fromIdx).trim();
+                    String from = rest.substring(fromIdx + 5, toIdx).trim();
+                    String to = rest.substring(toIdx + 3).trim();
+                    if (desc.isEmpty() || from.isEmpty() || to.isEmpty())
+                        throw new MalformedArgumentsException("event <desc> /from <start> /to <end>");
+                    Task t = new Event(desc, from, to);
+                    tasks.add(t);
+                    printAdded(t, tasks.size());
+
+                } else {
+                    throw new UnknownCommandException(input);
                 }
 
-            } else if (input.startsWith("todo ")) {
-                String desc = input.substring(5).trim();
-                if (desc.isEmpty()) {
-                    line();
-                    System.out.println(" [Error] The description of a todo cannot be empty.");
-                    line();
-                    continue;
-                }
-                Task t = new Todo(desc);
-                tasks.add(t);
-                printAdded(t, tasks.size());
-
-            } else if (input.startsWith("deadline ")) {
-                // expected format: deadline <desc> /by <when>
-                String rest = input.substring(9).trim();
-                int at = rest.indexOf("/by");
-                if (at == -1) {
-                    line();
-                    System.out.println(" [Error] Use: deadline <desc> /by <when>");
-                    line();
-                    continue;
-                }
-                String desc = rest.substring(0, at).trim();
-                String by = rest.substring(at + 3).trim(); // after "/by"
-                if (desc.isEmpty() || by.isEmpty()) {
-                    line();
-                    System.out.println(" [Error] Use: deadline <desc> /by <when>");
-                    line();
-                    continue;
-                }
-                Task t = new Deadline(desc, by);
-                tasks.add(t);
-                printAdded(t, tasks.size());
-
-            } else if (input.startsWith("event ")) {
-                // expected format: event <desc> /from <start> /to <end>
-                String rest = input.substring(6).trim();
-
-                int fromIdx = rest.indexOf("/from");
-                int toIdx = rest.indexOf("/to");
-
-                if (fromIdx == -1 || toIdx == -1 || toIdx <= fromIdx) {
-                    line();
-                    System.out.println(" [Error] Use: event <desc> /from <start> /to <end>");
-                    line();
-                    continue;
-                }
-
-                String desc = rest.substring(0, fromIdx).trim();
-                String from = rest.substring(fromIdx + 5, toIdx).trim(); // after "/from"
-                String to = rest.substring(toIdx + 3).trim();            // after "/to"
-
-                if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                    line();
-                    System.out.println(" [Error] Use: event <desc> /from <start> /to <end>");
-                    line();
-                    continue;
-                }
-
-                Task t = new Event(desc, from, to);
-                tasks.add(t);
-                printAdded(t, tasks.size());
-
-            } else if (!input.isEmpty()) {
-                // fallback: treat as a todo if user didn't include command
-                Task t = new Todo(input);
-                tasks.add(t);
-                printAdded(t, tasks.size());
+            } catch (ChattyException e) {
+                errorBox(e.getMessage());
+            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                errorBox("Please provide a valid task number within range.");
             }
         }
 
