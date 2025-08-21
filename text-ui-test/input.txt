@@ -1,0 +1,25 @@
+
+blah
+todo
+deadline
+deadline /by Sunday
+deadline do homework /by
+deadline do homework /by Sunday
+event
+event party /from Fri 2pm
+event party /to 3pm /from Fri 2pm
+event   /from Fri /to Sat
+event party /from Fri 2pm /to
+event party /from Fri 2pm /to 3pm
+todo read
+mark
+mark abc
+mark 0
+mark 99
+mark 2
+unmark
+unmark ab
+unmark 4
+unmark 2
+list
+bye
