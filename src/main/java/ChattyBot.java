@@ -78,6 +78,18 @@ public class ChattyBot {
                     System.out.println("   " + t);
                     line();
 
+                } else if (input.equals("delete")) {
+                    throw new ChattyException("Task number is missing.");
+
+                } else if (input.startsWith("delete ")) {
+                    int idx = parseIndex(input.substring(7).trim(), tasks.size());
+                    Task removed = tasks.remove(idx);
+                    line();
+                    System.out.println(" Noted. I've removed this task:");
+                    System.out.println("   " + removed);
+                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+                    line();
+
                 } else if (input.equals("todo")) {
                     throw new EmptyDescriptionException("a todo");
 
