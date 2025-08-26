@@ -109,18 +109,18 @@ public class ChattyBot {
                     printAdded(t, tasks.size());
 
                 } else if (input.equals("deadline")) {
-                    throw new MalformedArgumentsException("deadline <desc> /by <when>");
+                    throw new MalformedArgumentsException("deadline <desc> /by dd-MM-yyyy HHmm");
 
                 } else if (input.startsWith("deadline ")) {
                     String rest = input.substring(9).trim();
                     int at = rest.indexOf("/by");
                     if (at == -1) {
-                        throw new MalformedArgumentsException("deadline <desc> /by <when>");
+                        throw new MalformedArgumentsException("deadline <desc> /by dd-MM-yyyy HHmm");
                     }
                     String desc = rest.substring(0, at).trim();
                     String by = rest.substring(at + 3).trim();
                     if (desc.isEmpty() || by.isEmpty()) {
-                        throw new MalformedArgumentsException("deadline <desc> /by <when>");
+                        throw new MalformedArgumentsException("deadline <desc> /by dd-MM-yyyy HHmm");
                     }
                     Task t = new Deadline(desc, by);
                     tasks.add(t);
@@ -128,20 +128,20 @@ public class ChattyBot {
                     printAdded(t, tasks.size());
 
                 } else if (input.equals("event")) {
-                    throw new MalformedArgumentsException("event <desc> /from <start> /to <end>");
+                    throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
 
                 } else if (input.startsWith("event ")) {
                     String rest = input.substring(6).trim();
                     int fromIdx = rest.indexOf("/from");
                     int toIdx = rest.indexOf("/to");
                     if (fromIdx == -1 || toIdx == -1 || toIdx <= fromIdx) {
-                        throw new MalformedArgumentsException("event <desc> /from <start> /to <end>");
+                        throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
                     }
                     String desc = rest.substring(0, fromIdx).trim();
                     String from = rest.substring(fromIdx + 5, toIdx).trim();
                     String to = rest.substring(toIdx + 3).trim();
                     if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                        throw new MalformedArgumentsException("event <desc> /from <start> /to <end>");
+                        throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
                     }
                     Task t = new Event(desc, from, to);
                     tasks.add(t);
