@@ -1,5 +1,5 @@
 public class Task {
-    protected String description;
+    protected final String description;
     protected boolean isDone;
 
     public Task(String description) {
@@ -16,7 +16,12 @@ public class Task {
     }
 
     public String getStatus() {
-        return (isDone ? "X" : " ");
+        return isDone ? "X" : " ";
+    }
+
+    /** Serialize common portion: done flag + description (subclasses prepend their type). */
+    public String toDataString() {
+        return "/-/" + (isDone ? "1" : "0") + "/-/" + description;
     }
 
     @Override
