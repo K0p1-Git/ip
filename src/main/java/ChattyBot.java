@@ -1,167 +1,96 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ChattyBot {
-    private static void line() {
-        System.out.println("____________________________________________________________");
-    }
-
-    private static void printAdded(Task t, int count) {
-        line();
-        System.out.println(" Got it. I've added this task:");
-        System.out.println("   " + t);
-        System.out.println(" Now you have " + count + " tasks in the list.");
-        line();
-    }
-
-    private static void errorBox(String message) {
-        line();
-        System.out.println(" [Error] " + message);
-        line();
-    }
-
-    private static int parseIndex(String s, int size) throws ChattyException {
-        if (s.isEmpty()) throw new ChattyException("Task number is missing.");
-        int idx;
-        try {
-            idx = Integer.parseInt(s) - 1;
-        } catch (NumberFormatException ex) {
-            throw new ChattyException("Task number must be an integer.");
-        }
-        if (idx < 0 || idx >= size) {
-            throw new ChattyException("Task number out of range.");
-        }
-        return idx;
-    }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Storage storage = new Storage();          // Level 7: storage
-        ArrayList<Task> tasks = storage.load();   // Load on startup
+        Ui ui = new Ui();
+        Storage storage = new Storage();
+        ArrayList<Task> seed = storage.load();
+        TaskList tasks = new TaskList(seed);
 
-        line();
-        System.out.println(" Hello! I'm ChattyBot");
-        System.out.println(" What can I do for you?");
-        line();
+        ui.showWelcome();
 
         while (true) {
-            String input = sc.nextLine().trim();
-
-            if (input.equals("bye")) {
-                line();
-                System.out.println(" Bye. Hope to see you again soon!");
-                line();
-                break;
-            }
+            String input = ui.readCommand();
 
             try {
-                if (input.equals("list")) {
-                    line();
-                    System.out.println(" Here are the tasks in your list:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println(" " + (i + 1) + ". " + tasks.get(i));
-                    }
-                    line();
+                Parser.Parsed p = Parser.parse(input);
 
-                } else if (input.startsWith("mark ")) {
-                    int idx = parseIndex(input.substring(5).trim(), tasks.size());
+                switch (p.cmd()) {
+                case BYE: {
+                    ui.showBye();
+                    ui.close();
+                    return;
+                }
+                case LIST: {
+                    ui.showList(tasks);
+                    break;
+                }
+                case MARK: {
+                    int idx = Parser.parseIndexOrThrow(p.args(), tasks.size());
                     Task t = tasks.get(idx);
                     t.mark();
-                    storage.save(tasks);          // persist
-                    line();
-                    System.out.println(" Nice! I've marked this task as done:");
-                    System.out.println("   " + t);
-                    line();
-
-                } else if (input.startsWith("unmark ")) {
-                    int idx = parseIndex(input.substring(7).trim(), tasks.size());
+                    storage.save(tasks.asList());
+                    ui.showMarked(t);
+                    break;
+                }
+                case UNMARK: {
+                    int idx = Parser.parseIndexOrThrow(p.args(), tasks.size());
                     Task t = tasks.get(idx);
                     t.unmark();
-                    storage.save(tasks);          // persist
-                    line();
-                    System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + t);
-                    line();
-
-                } else if (input.equals("delete")) {
-                    // Explicitly handle bare 'delete' with a clear error
-                    throw new ChattyException("Task number is missing.");
-
-                } else if (input.startsWith("delete ")) {
-                    int idx = parseIndex(input.substring(7).trim(), tasks.size());
+                    storage.save(tasks.asList());
+                    ui.showUnmarked(t);
+                    break;
+                }
+                case DELETE: {
+                    if (p.args().isEmpty()) {
+                        throw new ChattyException("Task number is missing.");
+                    }
+                    int idx = Parser.parseIndexOrThrow(p.args(), tasks.size());
                     Task removed = tasks.remove(idx);
-                    storage.save(tasks);          // persist
-                    line();
-                    System.out.println(" Noted. I've removed this task:");
-                    System.out.println("   " + removed);
-                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
-                    line();
-
-                } else if (input.equals("todo")) {
-                    throw new EmptyDescriptionException("a todo");
-
-                } else if (input.startsWith("todo ")) {
-                    String desc = input.substring(5).trim();
-                    if (desc.isEmpty()) throw new EmptyDescriptionException("a todo");
-                    Task t = new Todo(desc);
+                    storage.save(tasks.asList());
+                    ui.showDeleted(removed, tasks.size());
+                    break;
+                }
+                case TODO: {
+                    if (p.args().isEmpty()) {
+                        throw new EmptyDescriptionException("a todo");
+                    }
+                    Task t = new Todo(p.args());
                     tasks.add(t);
-                    storage.save(tasks);          // persist
-                    printAdded(t, tasks.size());
-
-                } else if (input.equals("deadline")) {
-                    throw new MalformedArgumentsException("deadline <desc> /by dd-MM-yyyy HHmm");
-
-                } else if (input.startsWith("deadline ")) {
-                    String rest = input.substring(9).trim();
-                    int at = rest.indexOf("/by");
-                    if (at == -1) {
+                    storage.save(tasks.asList());
+                    ui.showAdded(t, tasks.size());
+                    break;
+                }
+                case DEADLINE: {
+                    if (p.args().isEmpty()) {
                         throw new MalformedArgumentsException("deadline <desc> /by dd-MM-yyyy HHmm");
                     }
-                    String desc = rest.substring(0, at).trim();
-                    String by = rest.substring(at + 3).trim();
-                    if (desc.isEmpty() || by.isEmpty()) {
-                        throw new MalformedArgumentsException("deadline <desc> /by dd-MM-yyyy HHmm");
-                    }
-                    Task t = new Deadline(desc, by);
+                    String[] parts = Parser.splitDeadlineArgs(p.args());
+                    Task t = new Deadline(parts[0], parts[1]); // may throw on bad date -> MalformedArgumentsException
                     tasks.add(t);
-                    storage.save(tasks);          // persist
-                    printAdded(t, tasks.size());
-
-                } else if (input.equals("event")) {
-                    throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
-
-                } else if (input.startsWith("event ")) {
-                    String rest = input.substring(6).trim();
-                    int fromIdx = rest.indexOf("/from");
-                    int toIdx = rest.indexOf("/to");
-                    if (fromIdx == -1 || toIdx == -1 || toIdx <= fromIdx) {
+                    storage.save(tasks.asList());
+                    ui.showAdded(t, tasks.size());
+                    break;
+                }
+                case EVENT: {
+                    if (p.args().isEmpty()) {
                         throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
                     }
-                    String desc = rest.substring(0, fromIdx).trim();
-                    String from = rest.substring(fromIdx + 5, toIdx).trim();
-                    String to = rest.substring(toIdx + 3).trim();
-                    if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                        throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
-                    }
-                    Task t = new Event(desc, from, to);
+                    String[] parts = Parser.splitEventArgs(p.args());
+                    Task t = new Event(parts[0], parts[1], parts[2]); // may throw on bad date -> MalformedArgumentsException
                     tasks.add(t);
-                    storage.save(tasks);          // persist
-                    printAdded(t, tasks.size());
-
-                } else {
-                    throw new UnknownCommandException(input);
+                    storage.save(tasks.asList());
+                    ui.showAdded(t, tasks.size());
+                    break;
+                }
                 }
 
-            } catch (ChattyFileException e) {
-                // I/O related problems wrapped in ChattyFileException
-                errorBox(e.getMessage());
             } catch (ChattyException e) {
-                errorBox(e.getMessage());
+                ui.showError(e.getMessage());
             } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                errorBox("Please provide a valid task number within range.");
+                ui.showError("Please provide a valid task number within range.");
             }
         }
-
-        sc.close();
     }
 }
