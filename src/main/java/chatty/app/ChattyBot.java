@@ -1,6 +1,7 @@
 package chatty.app;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import chatty.exceptions.ChattyException;
 import chatty.exceptions.EmptyDescriptionException;
@@ -103,6 +104,14 @@ public class ChattyBot {
                     tasks.add(t);
                     storage.save(tasks.asList());
                     ui.showAdded(t, tasks.size());
+                    break;
+                }
+                case FIND: { // NEW
+                    if (p.args().isEmpty()) {
+                        throw new MalformedArgumentsException("find <keyword>");
+                    }
+                    List<Task> matches = tasks.find(p.args());
+                    ui.showMatches(matches);
                     break;
                 }
                 }

@@ -1,6 +1,7 @@
 package chatty.task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskList {
     private final ArrayList<Task> tasks = new ArrayList<>();
@@ -76,5 +77,27 @@ public class TaskList {
      */
     public ArrayList<Task> asList() {
         return tasks;
+    }
+
+    /**
+     * Finds and returns a list of tasks that match the given keyword.
+     *
+     * @param keyword the keyword to search for in the tasks.
+     * @return a list of tasks that match the keyword.
+     * @see ArrayList
+     * @see Task
+     */
+    public List<Task> find(String keyword) {
+        ArrayList<Task> matches = new ArrayList<>();
+        if (keyword == null) {
+            return matches;
+        }
+        String k = keyword.toLowerCase();
+        for (Task t : tasks) {
+            if (t.toString().toLowerCase().contains(k)) {
+                matches.add(t);
+            }
+        }
+        return matches;
     }
 }

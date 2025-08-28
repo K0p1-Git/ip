@@ -32,6 +32,7 @@ public class Parser {
             case "todo" -> new Parsed(Command.TODO, args);
             case "deadline" -> new Parsed(Command.DEADLINE, args);
             case "event" -> new Parsed(Command.EVENT, args);
+            case "find" -> new Parsed(Command.FIND, args);
             default -> throw new UnknownCommandException(input);
         };
     }
@@ -117,7 +118,7 @@ public class Parser {
     }
 
     public enum Command {
-        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT
+        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND
     }
 
     public record Parsed(Command cmd, String args) { }

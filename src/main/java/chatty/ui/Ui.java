@@ -1,5 +1,6 @@
 package chatty.ui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import chatty.task.Task;
@@ -76,6 +77,15 @@ public class Ui {
 
     public void close() {
         sc.close();
+    }
+
+    public void showMatches(List<Task> matches) {
+        line();
+        System.out.println(" Here are the matching tasks in your list:");
+        for (int i = 0; i < matches.size(); i++) {
+            System.out.println(" " + (i + 1) + ". " + matches.get(i));
+        }
+        line();
     }
 
     private static void line() {
