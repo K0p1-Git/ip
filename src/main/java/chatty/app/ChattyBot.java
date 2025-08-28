@@ -1,4 +1,18 @@
+package chatty.app;
+
 import java.util.ArrayList;
+
+import chatty.exceptions.ChattyException;
+import chatty.exceptions.EmptyDescriptionException;
+import chatty.exceptions.MalformedArgumentsException;
+import chatty.parser.Parser;
+import chatty.storage.Storage;
+import chatty.task.Deadline;
+import chatty.task.Event;
+import chatty.task.Task;
+import chatty.task.TaskList;
+import chatty.task.Todo;
+import chatty.ui.Ui;
 
 public class ChattyBot {
 

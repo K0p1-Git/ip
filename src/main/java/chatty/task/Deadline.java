@@ -1,6 +1,11 @@
+package chatty.task;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import chatty.exceptions.ChattyException;
+import chatty.exceptions.MalformedArgumentsException;
 
 public class Deadline extends Task {
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm");

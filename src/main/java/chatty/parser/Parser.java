@@ -1,3 +1,9 @@
+package chatty.parser;
+
+import chatty.exceptions.ChattyException;
+import chatty.exceptions.MalformedArgumentsException;
+import chatty.exceptions.UnknownCommandException;
+
 public class Parser {
 
     /** Parse the first word into a command; keep the rest as raw args. */
