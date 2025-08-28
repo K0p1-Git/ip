@@ -1,4 +1,9 @@
+package chatty.ui;
+
 import java.util.Scanner;
+
+import chatty.task.Task;
+import chatty.task.TaskList;
 
 public class Ui {
     private final Scanner sc;

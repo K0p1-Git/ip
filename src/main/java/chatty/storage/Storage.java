@@ -1,3 +1,5 @@
+package chatty.storage;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +10,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+
+import chatty.exceptions.ChattyFileException;
+import chatty.task.Deadline;
+import chatty.task.Event;
+import chatty.task.Task;
+import chatty.task.Todo;
 
 public class Storage {
     private final File file;

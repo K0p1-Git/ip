@@ -1,3 +1,5 @@
+package chatty.exceptions;
+
 public class EmptyDescriptionException extends ChattyException {
     public EmptyDescriptionException(String what) {
         super("The description of " + what + " cannot be empty. "
