@@ -6,7 +6,14 @@ import chatty.exceptions.UnknownCommandException;
 
 public class Parser {
 
-    /** Parse the first word into a command; keep the rest as raw args. */
+    /**
+     * Parses the user input and returns a Parsed object containing the command and arguments.
+     *
+     * @param input the user input to be parsed.
+     * @return a Parsed object containing the command and arguments.
+     * @throws ChattyException if the input is empty or the command is not recognized.
+     * @see Parsed
+     */
     public static Parsed parse(String input) throws ChattyException {
         if (input.isEmpty()) {
             throw new UnknownCommandException("");
@@ -29,7 +36,18 @@ public class Parser {
         };
     }
 
-    /** Parse 1-based index with your existing error messages. */
+    /**
+     * Parses the index from the given string and checks if it is within the valid range.
+     *
+     * @param s the string to parse the index from.
+     * @param size the size of the list to check the index against.
+     * @return the parsed index.
+     * @throws ChattyException if the index is out of range or not a valid integer.
+     * @see ChattyException
+     * @see Integer#parseInt(String)
+     * @see String#isEmpty()
+     * @see String#trim()
+     */
     public static int parseIndexOrThrow(String s, int size) throws ChattyException {
         if (s == null || s.isEmpty()) {
             throw new ChattyException("Task number is missing.");
@@ -46,7 +64,17 @@ public class Parser {
         return idx;
     }
 
-    /** Split "deadline <desc> /by <when>" with your Level-8 format in usage. */
+    /**
+     * Splits the given string into an array of strings based on the "/by" delimiter.
+     * The first element of the array is the description, and the second element is the deadline.
+     *
+     * @param rest the string to split.
+     * @return an array of strings containing the description and deadline.
+     * @throws MalformedArgumentsException if the string does not contain the "/by" delimiter.
+     * @see MalformedArgumentsException
+     * @see String#indexOf(String)
+     * @see String#substring(int, int)
+     */
     public static String[] splitDeadlineArgs(String rest) throws MalformedArgumentsException {
         int at = rest.indexOf("/by");
         if (at == -1) {
@@ -60,7 +88,19 @@ public class Parser {
         return new String[]{desc, by};
     }
 
-    /** Split "event <desc> /from <start> /to <end>" with your Level-8 format in usage. */
+    /**
+     * Splits the given string into an array of strings based on the "/from" and "/to" delimiters.
+     * The first element of the array is the description, the second element is the start time
+     * , and the third element is the end time.
+     *
+     * @param rest the string to split.
+     * @return an array of strings containing the description, start time, and end time.
+     * @throws MalformedArgumentsException if the string does not contain the "/from" or "/to
+     * delimiters or if the delimiters are not in the correct order.
+     * @see MalformedArgumentsException
+     * @see String#indexOf(String)
+     * @see String#substring(int, int)
+     */
     public static String[] splitEventArgs(String rest) throws MalformedArgumentsException {
         int fromIdx = rest.indexOf("/from");
         int toIdx = rest.indexOf("/to");

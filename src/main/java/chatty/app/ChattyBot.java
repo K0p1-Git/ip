@@ -14,6 +14,13 @@ import chatty.task.TaskList;
 import chatty.task.Todo;
 import chatty.ui.Ui;
 
+/**
+ * Entry point for the ChattyBot application.
+ * This class is responsible for initializing the application and handling the main event loop.
+ * It uses the Ui, Storage, and TaskList classes to manage user interactions, data persistence, and task management.
+ *
+ * @author K0p1-Git
+ */
 public class ChattyBot {
 
     public static void main(String[] args) {

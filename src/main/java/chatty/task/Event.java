@@ -12,6 +12,21 @@ public class Event extends Task {
     private final LocalDateTime from;
     private final LocalDateTime to;
 
+    /**
+     * Constructs a new Event object with the specified description, start time, and end time.
+     * The start time and end time are parsed from the specified strings using the FMT formatter.
+     *
+     * @param description the description of the event.
+     * @param from the start time of the event.
+     * @param to the end time of the event.
+     * @throws MalformedArgumentsException if the start time or end time cannot be parsed.
+     * @throws ChattyException
+     * @see DateTimeFormatter
+     * @see LocalDateTime
+     * @see MalformedArgumentsException
+     * @see Task
+     * @see Task#Task(String)
+     */
     public Event(String description, String from, String to) throws ChattyException {
         super(description);
         try {

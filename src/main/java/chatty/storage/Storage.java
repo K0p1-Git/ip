@@ -20,11 +20,18 @@ import chatty.task.Todo;
 public class Storage {
     private final File file;
 
-    /** Saves to ./data/chatty.txt (relative, OS-independent). */
+    /**
+     * Constructs a new Storage object with the default file path.
+     */
     public Storage() {
         this.file = new File("data" + File.separator + "chatty.txt");
     }
 
+    /**
+     * Ensures that the file exists and is accessible.
+     *
+     * @throws ChattyFileException if the file cannot be created or accessed.
+     */
     private void ensureFile() throws ChattyFileException {
         try {
             File parent = file.getParentFile();
@@ -43,7 +50,17 @@ public class Storage {
         }
     }
 
-    /** Load tasks from disk; skip malformed lines (basic corruption tolerance). */
+    /**
+     * Loads tasks from the file. If the file is missing or unreadable, returns an empty list.
+     *
+     * @return the list of tasks loaded from the file.
+     * @see Task
+     * @see ArrayList
+     * @see File
+     * @see BufferedReader
+     * @see IOException
+     * @see ChattyFileException
+     */
     public ArrayList<Task> load() {
         ArrayList<Task> tasks = new ArrayList<>();
         try {
@@ -63,7 +80,18 @@ public class Storage {
         return tasks;
     }
 
-    /** Save all tasks (overwrite). Wrap I/O issues in ChattyFileException. */
+    /**
+     * Saves the list of tasks to the file. If the file is missing or unwritable, throws an exception.
+     *
+     * @param tasks the list of tasks to be saved.
+     * @throws ChattyFileException if the file is missing or unwritable.
+     * @see Task
+     * @see ArrayList
+     * @see File
+     * @see BufferedWriter
+     * @see IOException
+     * @see ChattyFileException
+     */
     public void save(ArrayList<Task> tasks) throws ChattyFileException {
         try {
             ensureFile();
@@ -79,10 +107,25 @@ public class Storage {
         }
     }
 
-    // Expected formats:
-    // T/-/0/-/desc
-    // D/-/1/-/desc/-/by
-    // E/-/0/-/desc/-/from/-/to
+
+
+    /**
+     * Parses a line from the file and returns a Task object.
+     *
+     * <p>Expected formats:</p>
+     * <pre>
+     * T / - / 0 / - / desc
+     * D / - / 1 / - / desc / - / by
+     * E / - / 0 / - / desc / - / from / - / to
+     * </pre>
+     *
+     * @param line the line to be parsed.
+     * @return a Task object.
+     * @see Task
+     * @see Todo
+     * @see Deadline
+     * @see Event
+     */
     private Task parseLine(String line) {
         try {
             String[] p = line.split("/-/");
