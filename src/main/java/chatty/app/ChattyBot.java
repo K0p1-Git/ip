@@ -24,12 +24,19 @@ import chatty.ui.Ui;
  */
 public class ChattyBot {
 
-    public static void main(String[] args) {
-        Ui ui = new Ui();
-        Storage storage = new Storage();
-        ArrayList<Task> seed = storage.load();
-        TaskList tasks = new TaskList(seed);
+    private final Ui ui;
+    private final Storage storage;
+    private final TaskList tasks;
 
+    public ChattyBot() {
+        this.ui = new Ui();
+        this.storage = new Storage();
+        ArrayList<Task> seed = storage.load();
+        this.tasks = new TaskList(seed);
+    }
+
+    /** Runs the main event loop of ChattyBot. */
+    public void run() {
         ui.showWelcome();
 
         while (true) {
@@ -89,7 +96,7 @@ public class ChattyBot {
                         throw new MalformedArgumentsException("deadline <desc> /by dd-MM-yyyy HHmm");
                     }
                     String[] parts = Parser.splitDeadlineArgs(p.args());
-                    Task t = new Deadline(parts[0], parts[1]); // may throw on bad date -> MalformedArgumentsException
+                    Task t = new Deadline(parts[0], parts[1]);
                     tasks.add(t);
                     storage.save(tasks.asList());
                     ui.showAdded(t, tasks.size());
@@ -100,13 +107,13 @@ public class ChattyBot {
                         throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
                     }
                     String[] parts = Parser.splitEventArgs(p.args());
-                    Task t = new Event(parts[0], parts[1], parts[2]); // may throw on bad date -> MalformedArgumentsException
+                    Task t = new Event(parts[0], parts[1], parts[2]);
                     tasks.add(t);
                     storage.save(tasks.asList());
                     ui.showAdded(t, tasks.size());
                     break;
                 }
-                case FIND: { // NEW
+                case FIND: {
                     if (p.args().isEmpty()) {
                         throw new MalformedArgumentsException("find <keyword>");
                     }
@@ -122,5 +129,9 @@ public class ChattyBot {
                 ui.showError("Please provide a valid task number within range.");
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new ChattyBot().run();
     }
 }
