@@ -1,5 +1,12 @@
 package chatty.exceptions;
 
+/**
+ * Represents an exception specific to the Chatty application.
+ * This exception is thrown when an error occurs within the Chatty application
+ * and provides a custom error message.
+ *
+ * @see Exception
+ */
 public class ChattyException extends Exception {
     /**
      * Constructs a new ChattyException with the specified detail message.

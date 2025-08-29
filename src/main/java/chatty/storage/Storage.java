@@ -17,6 +17,12 @@ import chatty.task.Event;
 import chatty.task.Task;
 import chatty.task.Todo;
 
+/**
+ * Handles the loading and saving of tasks to and from a file.
+ * The file is located at "data/chatty.txt" by default.
+ * If the file or directory does not exist, it will be created.
+ * If the file is corrupted or cannot be read, an exception will be thrown.
+ */
 public class Storage {
     private final File file;
 
@@ -70,12 +76,13 @@ public class Storage {
                 String line;
                 while ((line = br.readLine()) != null) {
                     Task t = parseLine(line);
-                    if (t != null) tasks.add(t);
+                    if (t != null) {
+                        tasks.add(t);
+                    }
                 }
             }
         } catch (ChattyFileException | IOException ignored) {
-            // If file missing/unreadable: start with empty list quietly.
-            tasks.clear();
+            tasks.clear(); // If file missing/unreadable: start with empty list quietly.
         }
         return tasks;
     }
@@ -142,17 +149,23 @@ public class Storage {
                 t = new Todo(desc);
                 break;
             case "D":
-                if (p.length < 4) return null;
+                if (p.length < 4) {
+                    return null;
+                }
                 t = new Deadline(desc, p[3].trim());
                 break;
             case "E":
-                if (p.length < 5) return null;
+                if (p.length < 5) {
+                    return null;
+                }
                 t = new Event(desc, p[3].trim(), p[4].trim());
                 break;
             default:
                 return null;
             }
-            if (done) t.mark();
+            if (done) {
+                t.mark();
+            }
             return t;
         } catch (Exception ex) {
             return null; // skip corrupted line

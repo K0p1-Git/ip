@@ -7,6 +7,10 @@ import java.time.format.DateTimeParseException;
 import chatty.exceptions.ChattyException;
 import chatty.exceptions.MalformedArgumentsException;
 
+/**
+ * Represents a task with a deadline. A Deadline object contains a description and a deadline.
+ * The deadline is stored as a LocalDateTime object.
+ */
 public class Deadline extends Task {
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm");
     private final LocalDateTime by;

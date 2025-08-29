@@ -1,5 +1,8 @@
 package chatty.task;
 
+/**
+ * Represents a todo task. A Todo object contains a description. The Todo class extends the Task class.
+ */
 public class Todo extends Task {
     public Todo(String description) {
         super(description);
