@@ -3,6 +3,10 @@ package chatty.task;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a list of tasks. A TaskList object contains an ArrayList of Task objects.
+ * The TaskList class provides methods to add, remove, and retrieve tasks from the list.
+ */
 public class TaskList {
     private final ArrayList<Task> tasks = new ArrayList<>();
 

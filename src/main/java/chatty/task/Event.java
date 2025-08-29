@@ -7,6 +7,12 @@ import java.time.format.DateTimeParseException;
 import chatty.exceptions.ChattyException;
 import chatty.exceptions.MalformedArgumentsException;
 
+/**
+ * Represents an event task with a start and end time.
+ * An Event object contains a description, a start time, and an end time.
+ * The start and end times are stored as LocalDateTime objects.
+ * The Event class extends the Task class.
+ */
 public class Event extends Task {
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm");
     private final LocalDateTime from;
@@ -20,7 +26,6 @@ public class Event extends Task {
      * @param from the start time of the event.
      * @param to the end time of the event.
      * @throws MalformedArgumentsException if the start time or end time cannot be parsed.
-     * @throws ChattyException
      * @see DateTimeFormatter
      * @see LocalDateTime
      * @see MalformedArgumentsException
@@ -31,7 +36,7 @@ public class Event extends Task {
         super(description);
         try {
             this.from = LocalDateTime.parse(from, FMT);
-            this.to   = LocalDateTime.parse(to,   FMT);
+            this.to = LocalDateTime.parse(to, FMT);
         } catch (DateTimeParseException e) {
             throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
         }
@@ -41,7 +46,7 @@ public class Event extends Task {
     public String toString() {
         return "[E]" + super.toString()
                 + " (from: " + from.format(FMT)
-                + " to: "   + to.format(FMT) + ")";
+                + " to: " + to.format(FMT) + ")";
     }
 
     @Override

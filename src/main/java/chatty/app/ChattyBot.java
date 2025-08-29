@@ -28,6 +28,11 @@ public class ChattyBot {
     private final Storage storage;
     private final TaskList tasks;
 
+    /**
+     * Constructs a new ChattyBot instance.
+     * Initializes the user interface, storage, and task list.
+     * Loads any existing tasks from storage.
+     */
     public ChattyBot() {
         this.ui = new Ui();
         this.storage = new Storage();
@@ -121,8 +126,10 @@ public class ChattyBot {
                     ui.showMatches(matches);
                     break;
                 }
+                default: {
+                    throw new ChattyException("Unknown command encountered: " + p.cmd());
                 }
-
+                }
             } catch (ChattyException e) {
                 ui.showError(e.getMessage());
             } catch (NumberFormatException | IndexOutOfBoundsException e) {

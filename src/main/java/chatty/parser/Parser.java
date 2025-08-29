@@ -4,8 +4,10 @@ import chatty.exceptions.ChattyException;
 import chatty.exceptions.MalformedArgumentsException;
 import chatty.exceptions.UnknownCommandException;
 
+/**
+ * The Parser class is responsible for parsing user input and converting it into a Parsed object.
+ */
 public class Parser {
-
     /**
      * Parses the user input and returns a Parsed object containing the command and arguments.
      *
@@ -24,16 +26,16 @@ public class Parser {
         String args = (parts.length > 1) ? parts[1].trim() : "";
 
         return switch (keyword) {
-            case "bye" -> new Parsed(Command.BYE, args);
-            case "list" -> new Parsed(Command.LIST, args);
-            case "mark" -> new Parsed(Command.MARK, args);
-            case "unmark" -> new Parsed(Command.UNMARK, args);
-            case "delete" -> new Parsed(Command.DELETE, args);
-            case "todo" -> new Parsed(Command.TODO, args);
-            case "deadline" -> new Parsed(Command.DEADLINE, args);
-            case "event" -> new Parsed(Command.EVENT, args);
-            case "find" -> new Parsed(Command.FIND, args);
-            default -> throw new UnknownCommandException(input);
+        case "bye" -> new Parsed(Command.BYE, args);
+        case "list" -> new Parsed(Command.LIST, args);
+        case "mark" -> new Parsed(Command.MARK, args);
+        case "unmark" -> new Parsed(Command.UNMARK, args);
+        case "delete" -> new Parsed(Command.DELETE, args);
+        case "todo" -> new Parsed(Command.TODO, args);
+        case "deadline" -> new Parsed(Command.DEADLINE, args);
+        case "event" -> new Parsed(Command.EVENT, args);
+        case "find" -> new Parsed(Command.FIND, args);
+        default -> throw new UnknownCommandException(input);
         };
     }
 
@@ -91,13 +93,12 @@ public class Parser {
 
     /**
      * Splits the given string into an array of strings based on the "/from" and "/to" delimiters.
-     * The first element of the array is the description, the second element is the start time
-     * , and the third element is the end time.
+     * The first element of the array is the description, the second element is the start time,
+     * and the third element is the end time.
      *
      * @param rest the string to split.
      * @return an array of strings containing the description, start time, and end time.
-     * @throws MalformedArgumentsException if the string does not contain the "/from" or "/to
-     * delimiters or if the delimiters are not in the correct order.
+     * @throws MalformedArgumentsException if the string does not contain the "/from" and "/to" delimiters.
      * @see MalformedArgumentsException
      * @see String#indexOf(String)
      * @see String#substring(int, int)
@@ -117,9 +118,11 @@ public class Parser {
         return new String[]{desc, from, to};
     }
 
+    /** Represents the commands that can be parsed.*/
     public enum Command {
         BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, FIND
     }
 
+    /** Represents the result of parsing a command.*/
     public record Parsed(Command cmd, String args) { }
 }

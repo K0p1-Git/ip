@@ -1,5 +1,9 @@
 package chatty.task;
 
+/**
+ * Represents a task with a description and a completion status.
+ * A Task object contains a description and a boolean indicating whether the task is done.
+ */
 public class Task {
     protected final String description;
     protected boolean isDone;
