@@ -16,22 +16,17 @@ import chatty.task.Todo;
 import chatty.ui.Ui;
 
 /**
- * Entry point for the ChattyBot application.
- * This class is responsible for initializing the application and handling the main event loop.
- * It uses the Ui, Storage, and TaskList classes to manage user interactions, data persistence, and task management.
- *
- * @author K0p1-Git
+ * CLI entry point for ChattyBot.
+ * Uses Ui to format messages and prints them to stdout.
  */
 public class ChattyBot {
-
     private final Ui ui;
     private final Storage storage;
     private final TaskList tasks;
 
     /**
      * Constructs a new ChattyBot instance.
-     * Initializes the user interface, storage, and task list.
-     * Loads any existing tasks from storage.
+     * Initializes the UI, storage, and task list.
      */
     public ChattyBot() {
         this.ui = new Ui();
@@ -40,24 +35,26 @@ public class ChattyBot {
         this.tasks = new TaskList(seed);
     }
 
-    /** Runs the main event loop of ChattyBot. */
+    /**
+     * Runs the ChattyBot application.
+     * Handles user input and executes commands until the user exits.
+     */
     public void run() {
-        ui.showWelcome();
+        System.out.println(ui.box(ui.showWelcome()));
 
         while (true) {
             String input = ui.readCommand();
-
             try {
                 Parser.Parsed p = Parser.parse(input);
 
                 switch (p.cmd()) {
                 case BYE: {
-                    ui.showBye();
+                    System.out.println(ui.box(ui.showBye()));
                     ui.close();
                     return;
                 }
                 case LIST: {
-                    ui.showList(tasks);
+                    System.out.println(ui.box(ui.showList(tasks)));
                     break;
                 }
                 case MARK: {
@@ -65,7 +62,7 @@ public class ChattyBot {
                     Task t = tasks.get(idx);
                     t.mark();
                     storage.save(tasks.asList());
-                    ui.showMarked(t);
+                    System.out.println(ui.box(ui.showMarked(t)));
                     break;
                 }
                 case UNMARK: {
@@ -73,7 +70,7 @@ public class ChattyBot {
                     Task t = tasks.get(idx);
                     t.unmark();
                     storage.save(tasks.asList());
-                    ui.showUnmarked(t);
+                    System.out.println(ui.box(ui.showUnmarked(t)));
                     break;
                 }
                 case DELETE: {
@@ -83,7 +80,7 @@ public class ChattyBot {
                     int idx = Parser.parseIndexOrThrow(p.args(), tasks.size());
                     Task removed = tasks.remove(idx);
                     storage.save(tasks.asList());
-                    ui.showDeleted(removed, tasks.size());
+                    System.out.println(ui.box(ui.showDeleted(removed, tasks.size())));
                     break;
                 }
                 case TODO: {
@@ -93,7 +90,7 @@ public class ChattyBot {
                     Task t = new Todo(p.args());
                     tasks.add(t);
                     storage.save(tasks.asList());
-                    ui.showAdded(t, tasks.size());
+                    System.out.println(ui.box(ui.showAdded(t, tasks.size())));
                     break;
                 }
                 case DEADLINE: {
@@ -104,7 +101,7 @@ public class ChattyBot {
                     Task t = new Deadline(parts[0], parts[1]);
                     tasks.add(t);
                     storage.save(tasks.asList());
-                    ui.showAdded(t, tasks.size());
+                    System.out.println(ui.box(ui.showAdded(t, tasks.size())));
                     break;
                 }
                 case EVENT: {
@@ -115,7 +112,7 @@ public class ChattyBot {
                     Task t = new Event(parts[0], parts[1], parts[2]);
                     tasks.add(t);
                     storage.save(tasks.asList());
-                    ui.showAdded(t, tasks.size());
+                    System.out.println(ui.box(ui.showAdded(t, tasks.size())));
                     break;
                 }
                 case FIND: {
@@ -123,7 +120,7 @@ public class ChattyBot {
                         throw new MalformedArgumentsException("find <keyword>");
                     }
                     List<Task> matches = tasks.find(p.args());
-                    ui.showMatches(matches);
+                    System.out.println(ui.box(ui.showMatches(matches)));
                     break;
                 }
                 default: {
@@ -131,9 +128,9 @@ public class ChattyBot {
                 }
                 }
             } catch (ChattyException e) {
-                ui.showError(e.getMessage());
+                System.out.println(ui.box(ui.showError(e.getMessage())));
             } catch (NumberFormatException | IndexOutOfBoundsException e) {
-                ui.showError("Please provide a valid task number within range.");
+                System.out.println(ui.box(ui.showError("Please provide a valid task number within range.")));
             }
         }
     }

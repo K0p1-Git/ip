@@ -140,7 +140,7 @@ public class Storage {
                 return null;
             }
             String kind = p[0].trim();
-            boolean done = "1".equals(p[1].trim());
+            boolean isDone = "1".equals(p[1].trim());
             String desc = p[2].trim();
 
             Task t;
@@ -163,7 +163,7 @@ public class Storage {
             default:
                 return null;
             }
-            if (done) {
+            if (isDone) {
                 t.mark();
             }
             return t;

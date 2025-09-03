@@ -7,154 +7,178 @@ import chatty.task.Task;
 import chatty.task.TaskList;
 
 /**
- * Handles user interaction. This includes displaying messages to the user and reading user input.
- * The Ui class is responsible for the input/output operations of the application.
- * It uses a Scanner object to read user input from the console.
- * The Ui class is initialized with a Scanner object that reads from the standard input.
- * The Ui class provides methods to display various messages to the user, such as welcome messages,
- * error messages, and task-related messages.
+ * Handles user interaction formatting and (optionally) reading console input.
+ * <p>
+ * This Ui does <b>not</b> print directly; instead, it returns formatted strings so the
+ * caller (CLI or GUI) can decide how to display them. For CLI usage, {@link #readCommand()}
+ * reads from {@code System.in} and callers can {@code System.out.println(...)} the returned
+ * strings.
+ * </p>
  */
 public class Ui {
     private final Scanner sc;
 
     /**
-     * Constructs a new Ui object with a Scanner object that reads from the standard input.
+     * Constructs a new Ui that reads commands from standard input (CLI mode).
      */
-
     public Ui() {
         this.sc = new Scanner(System.in);
     }
 
     /**
-     * Displays a welcome message to the user.
-     */
-    public void showWelcome() {
-        line();
-        System.out.println(" Hello! I'm ChattyBot");
-        System.out.println(" What can I do for you?");
-        line();
-    }
-
-    /**
-     * Displays a goodbye message to the user.
-     */
-    public void showBye() {
-        line();
-        System.out.println(" Bye. Hope to see you again soon!");
-        line();
-    }
-
-    /**
-     * Displays an error message to the user.
+     * Returns a formatted welcome message.
      *
-     * @param message The error message to be displayed.
+     * @return the welcome message, boxed with divider lines
      */
-    public void showError(String message) {
-        line();
-        System.out.println(" [Error] " + message);
-        line();
+    public String showWelcome() {
+        return " Hello! I'm ChattyBot\n" + " What can I do for you?";
     }
 
     /**
-     * Displays a message to the user indicating that a task has been added to the list.
+     * Returns a formatted goodbye message.
      *
-     * @param t The task that has been added.
-     * @param count The total number of tasks in the list after the addition
+     * @return the goodbye message, boxed with divider lines
      */
-    public void showAdded(Task t, int count) {
-        line();
-        System.out.println(" Got it. I've added this task:");
-        System.out.println("   " + t);
-        System.out.println(" Now you have " + count + " tasks in the list.");
-        line();
+    public String showBye() {
+        return " Bye. Hope to see you again soon!";
     }
 
     /**
-     * Displays the list of tasks to the user.
+     * Returns a formatted error message.
      *
-     * @param tasks The list of tasks to be displayed.
+     * @param message the error details to include
+     * @return the error message, boxed with divider lines
      */
-    public void showList(TaskList tasks) {
-        line();
-        System.out.println(" Here are the tasks in your list:");
+    public String showError(String message) {
+        return " [Error] " + message;
+    }
+
+    /**
+     * Returns a formatted message indicating a task has been added.
+     *
+     * @param t     the task that was added
+     * @param count the total number of tasks after the addition
+     * @return the add-task message, boxed with divider lines
+     */
+    public String showAdded(Task t, int count) {
+        return " Got it. I've added this task:\n" + "   " + t + "\n"
+                + " Now you have " + count + " tasks in the list.";
+    }
+
+    /**
+     * Returns a formatted list of tasks.
+     *
+     * @param tasks the tasks to display
+     * @return the list message, boxed with divider lines
+     */
+    public String showList(TaskList tasks) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" Here are the tasks in your list:\n");
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println(" " + (i + 1) + ". " + tasks.get(i));
+            sb.append(" ").append(i + 1).append(". ").append(tasks.get(i)).append("\n");
         }
-        line();
+        return trimEnd(sb);
     }
 
     /**
-     * Displays a message to the user indicating that a task has been marked as done.
+     * Returns a formatted message indicating a task has been marked as done.
      *
-     * @param t The task that has been marked as done.
+     * @param t the task that was marked done
+     * @return the mark message, boxed with divider lines
      */
-    public void showMarked(Task t) {
-        line();
-        System.out.println(" Nice! I've marked this task as done:");
-        System.out.println("   " + t);
-        line();
+    public String showMarked(Task t) {
+        return " Nice! I've marked this task as done:\n" + "   " + t;
     }
 
     /**
-     * Displays a message to the user indicating that a task has been marked as not done.
+     * Returns a formatted message indicating a task has been marked as not done.
      *
-     * @param t The task that has been marked as
+     * @param t the task that was unmarked
+     * @return the unmark message, boxed with divider lines
      */
-    public void showUnmarked(Task t) {
-        line();
-        System.out.println(" OK, I've marked this task as not done yet:");
-        System.out.println("   " + t);
-        line();
+    public String showUnmarked(Task t) {
+        return " OK, I've marked this task as not done yet:\n" + "   " + t;
     }
 
     /**
-     * Displays a message to the user indicating that a task has been deleted.
+     * Returns a formatted message indicating a task has been deleted.
      *
-     * @param removed The task that has been deleted.
-     * @param remaining The number of tasks remaining in the list.
+     * @param removed   the deleted task
+     * @param remaining the number of remaining tasks
+     * @return the delete message, boxed with divider lines
      */
-    public void showDeleted(Task removed, int remaining) {
-        line();
-        System.out.println(" Noted. I've removed this task:");
-        System.out.println("   " + removed);
-        System.out.println(" Now you have " + remaining + " tasks in the list.");
-        line();
+    public String showDeleted(Task removed, int remaining) {
+        return " Noted. I've removed this task:\n" + "   "
+                + removed + "\n" + " Now you have " + remaining + " tasks in the list.";
     }
 
     /**
-     * Reads a command from the user input.
+     * Returns a formatted list of tasks that match a query.
      *
-     * @return The command entered by the user, trimmed of leading and trailing whitespace.
+     * @param matches the matching tasks
+     * @return the matches message, boxed with divider lines
+     */
+    public String showMatches(List<Task> matches) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(" Here are the matching tasks in your list:\n");
+        if (matches.isEmpty()) {
+            sb.append(" (none)\n");
+        } else {
+            for (int i = 0; i < matches.size(); i++) {
+                sb.append(" ").append(i + 1).append(". ").append(matches.get(i)).append("\n");
+            }
+        }
+        return trimEnd(sb);
+    }
+
+    /**
+     * Reads a command from standard input (CLI).
+     *
+     * @return the trimmed command entered by the user
      */
     public String readCommand() {
         return sc.nextLine().trim();
     }
 
     /**
-     * Closes the scanner used for reading user input.
+     * Closes the underlying scanner (CLI).
      */
     public void close() {
         sc.close();
     }
 
+    /* ----------------- formatting helpers ----------------- */
+
     /**
-     * Displays a list of tasks that match a search query.
+     * Returns a divider line.
      *
-     * @param matches A list of tasks that match the search query.
+     * @return the divider line
      */
-    public void showMatches(List<Task> matches) {
-        line();
-        System.out.println(" Here are the matching tasks in your list:");
-        for (int i = 0; i < matches.size(); i++) {
-            System.out.println(" " + (i + 1) + ". " + matches.get(i));
-        }
-        line();
+    private static String line() {
+        return "____________________________________________________________";
     }
 
     /**
-     * Prints a horizontal line to separate different sections of output.
+     * Boxes the given body with divider lines.
+     *
+     * @param body the body to box
+     * @return the boxed body
      */
-    private static void line() {
-        System.out.println("____________________________________________________________");
+    public String box(String body) {
+        return line() + "\n" + body + "\n" + line();
+    }
+
+    /**
+     * Trims the end of the given string.
+     *
+     * @param cs the string to trim
+     * @return the trimmed string
+     */
+    private static String trimEnd(CharSequence cs) {
+        int end = cs.length();
+        while (end > 0 && Character.isWhitespace(cs.charAt(end - 1))) {
+            end--;
+        }
+        return cs.subSequence(0, end).toString();
     }
 }
