@@ -1,0 +1,44 @@
+/* ===== Chat bubbles (Label inside DialogBox) ===== */
+
+/* USER bubble (right side) — colorful but tasteful */
+.label {
+    /* layout */
+    -fx-padding: 10 14 10 14;
+    -fx-wrap-text: true;
+    -fx-background-radius: 18 18 4 18;   /* tail on the right */
+    -fx-border-radius: 18 18 4 18;
+
+    /* color */
+    -fx-background-color: linear-gradient(to bottom right, #4f46e5, #06b6d4);
+    -fx-text-fill: #eaf2ff;
+
+    /* polish */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, .35), 14, 0.2, 0, 2);
+    -fx-font-size: 14px;
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* BOT bubble (left side) — neutral/darker */
+.reply-label {
+    -fx-background-color: #1f2530;
+    -fx-text-fill: #d8e2f0;
+
+    /* mirror the corner radii so the tail is on the left */
+    -fx-background-radius: 18 18 18 4;
+    -fx-border-radius: 18 18 18 4;
+
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, .45), 16, 0.25, 0, 3);
+}
+
+/* Avatar image */
+#displayPicture {
+    /* soft shadow */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 12, 0.4, 0, 2);
+
+    /* size (you can tweak in code too) */
+    -fx-fit-width: 48px;   /* note: these props are cosmetic; real size set in code */
+    -fx-fit-height: 48px;
+
+    /* subtle polish */
+    -fx-opacity: 0.96;
+}

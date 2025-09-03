@@ -1,0 +1,74 @@
+/* ===== App Surface ===== */
+.root {
+    /* Define looked-up colors for reuse */
+    main-bg:    #0e1218;   /* Dark background */
+    pane-bg:    #121824;   /* Slightly lighter panels */
+    accent:     #4f46e5;   /* Vibrant purple-blue for buttons */
+    accent-alt: #22d3ee;   /* Teal for hover */
+    text:       #e5ecf5;   /* Primary text */
+    text-dim:   #9fb0c6;   /* Secondary text */
+    danger:     #ef4444;   /* Error states */
+
+    -fx-background-color: main-bg;
+    -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-text-fill: text;
+}
+
+/* ===== TextField ===== */
+.text-field {
+    -fx-background-color: pane-bg;
+    -fx-text-fill: text;
+    -fx-font-size: 14px;
+    -fx-padding: 8 12;
+    -fx-background-radius: 0.75em;
+    -fx-border-radius: 0.75em;
+    -fx-border-color: transparent;
+}
+
+.text-field:focused {
+    -fx-border-color: accent;
+    -fx-border-width: 2px;
+}
+
+/* ===== Buttons ===== */
+.button {
+    -fx-background-color: accent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 0.75em;
+    -fx-border-radius: 0.75em;
+    -fx-cursor: hand;
+    -fx-padding: 8 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0.3, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: accent-alt;
+}
+
+.button:pressed {
+    -fx-background-color: danger;
+}
+
+/* ===== ScrollPane ===== */
+.scroll-pane,
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar {
+    -fx-background-color: main-bg;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: accent;
+    -fx-background-radius: 1em;
+}
+
+/* Hide increment/decrement buttons */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}

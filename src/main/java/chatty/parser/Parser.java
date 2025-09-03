@@ -26,16 +26,16 @@ public class Parser {
         String args = (parts.length > 1) ? parts[1].trim() : "";
 
         return switch (keyword) {
-        case "bye" -> new Parsed(Command.BYE, args);
-        case "list" -> new Parsed(Command.LIST, args);
-        case "mark" -> new Parsed(Command.MARK, args);
-        case "unmark" -> new Parsed(Command.UNMARK, args);
-        case "delete" -> new Parsed(Command.DELETE, args);
-        case "todo" -> new Parsed(Command.TODO, args);
-        case "deadline" -> new Parsed(Command.DEADLINE, args);
-        case "event" -> new Parsed(Command.EVENT, args);
-        case "find" -> new Parsed(Command.FIND, args);
-        default -> throw new UnknownCommandException(input);
+            case "bye" -> new Parsed(Command.BYE, args);
+            case "list" -> new Parsed(Command.LIST, args);
+            case "mark" -> new Parsed(Command.MARK, args);
+            case "unmark" -> new Parsed(Command.UNMARK, args);
+            case "delete" -> new Parsed(Command.DELETE, args);
+            case "todo" -> new Parsed(Command.TODO, args);
+            case "deadline" -> new Parsed(Command.DEADLINE, args);
+            case "event" -> new Parsed(Command.EVENT, args);
+            case "find" -> new Parsed(Command.FIND, args);
+            default -> throw new UnknownCommandException(input);
         };
     }
 

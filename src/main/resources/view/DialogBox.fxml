@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root alignment="TOP_RIGHT" prefWidth="400.0" spacing="8.0" stylesheets="@dialog-box.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label fx:id="dialog" minHeight="-Infinity" text="label" wrapText="true" />
+        <ImageView fx:id="displayPicture" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" />
+    </children>
+    <padding>
+        <Insets bottom="12.0" left="8.0" right="8.0" top="12.0" />
+    </padding>
+</fx:root>
