@@ -35,7 +35,7 @@
     /* soft shadow */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 12, 0.4, 0, 2);
 
-    /* size (you can tweak in code too) */
+    /* size of the image */
     -fx-fit-width: 48px;   /* note: these props are cosmetic; real size set in code */
     -fx-fit-height: 48px;
 
