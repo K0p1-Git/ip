@@ -68,6 +68,7 @@ public class TaskList {
      * @see TaskList#tasks
      */
     public Task remove(int idx) {
+        assert idx >= 0 && idx < tasks.size() : "Index out of bounds in TaskList#remove";
         return tasks.remove(idx);
     }
 
@@ -92,10 +93,8 @@ public class TaskList {
      * @see Task
      */
     public List<Task> find(String keyword) {
+        assert keyword != null && !keyword.isEmpty() : "Search keyword should be non-null and non-empty";
         ArrayList<Task> matches = new ArrayList<>();
-        if (keyword == null) {
-            return matches;
-        }
         String k = keyword.toLowerCase();
         for (Task t : tasks) {
             if (t.toString().toLowerCase().contains(k)) {
