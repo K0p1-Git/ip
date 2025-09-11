@@ -1,5 +1,9 @@
 package chatty.command;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import chatty.exceptions.ChattyException;
 import chatty.exceptions.EmptyDescriptionException;
 import chatty.exceptions.MalformedArgumentsException;
@@ -8,6 +12,8 @@ import chatty.task.TaskList;
 
 /** Factory class for creating Command objects. */
 public final class CommandFactory {
+
+    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /** Private constructor to prevent instantiation. */
     private CommandFactory() {}
@@ -69,6 +75,18 @@ public final class CommandFactory {
                 throw new MalformedArgumentsException("find <keyword>");
             }
             return new FindCommand(p.args());
+        }
+        case VIEW: {
+            String arg = p.args();
+            if (arg == null || arg.isBlank()) {
+                throw new MalformedArgumentsException("view <dd-MM-yyyy>");
+            }
+            try {
+                LocalDate day = LocalDate.parse(arg.trim(), DATE_FMT);
+                return new ViewCommand(day);
+            } catch (DateTimeParseException e) {
+                throw new MalformedArgumentsException("view <dd-MM-yyyy>");
+            }
         }
         default:
             throw new ChattyException("Unknown command encountered: " + p.cmd());

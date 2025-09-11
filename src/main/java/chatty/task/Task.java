@@ -22,6 +22,24 @@ public class Task {
     }
 
     /**
+     * Returns the completion status of the task.
+     *
+     * @return the completion status of the task.
+     */
+    public boolean getIsDone() {
+        return isDone;
+    }
+
+    /**
+     * Returns the description of the task.
+     *
+     * @return the description of the task.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
      * Marks the task as done.
      *
      * @see Task#isDone

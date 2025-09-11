@@ -42,6 +42,24 @@ public class Event extends Task {
         }
     }
 
+    /**
+     * Returns the start time of the event.
+     *
+     * @return the start time of the event.
+     */
+    public LocalDateTime getFrom() {
+        return from;
+    }
+
+    /**
+     * Returns the end time of the event.
+     *
+     * @return the end time of the event.
+     */
+    public LocalDateTime getTo() {
+        return to;
+    }
+
     @Override
     public String toString() {
         return "[E]" + super.toString()
