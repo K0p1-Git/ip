@@ -65,6 +65,18 @@ public final class ViewCommand implements Command {
             return sb.toString();
         }
 
+        buildOutputString(entries, sb);
+
+        return sb.toString();
+    }
+
+    /**
+     * Builds the output string for the schedule.
+     *
+     * @param entries The list of entries to be included in the schedule.
+     * @param sb      The StringBuilder to append the output string to.
+     */
+    private static void buildOutputString(List<Entry> entries, StringBuilder sb) {
         // Build output string
         for (Entry en : entries) {
             String status = en.done ? "[X]" : "[ ]";
@@ -92,7 +104,6 @@ public final class ViewCommand implements Command {
                         .append(System.lineSeparator());
             }
         }
-        return sb.toString();
     }
 
     /** Local struct for schedule entries. */
