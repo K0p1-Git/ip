@@ -1,0 +1,1 @@
+AI, specifically GPT, was used to assist in generating the user guide found in /docs/README.md
