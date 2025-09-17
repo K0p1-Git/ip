@@ -25,8 +25,9 @@ simple **Graphical User Interface (GUI)** for easier interaction.
     - [Unmarking Tasks](#6-unmarking-tasks)
     - [Deleting Tasks](#7-deleting-tasks)
     - [Finding Tasks](#8-finding-tasks)
-    - [Exiting the Program](#9-exiting-the-program)
-3. [Command Summary](#command-summary)
+    - [Viewing Schedule](#9-view-schedule)
+    - [Exiting the Program](#10-exiting-the-program)
+4. [Command Summary](#command-summary)
 
 ---
 
@@ -107,7 +108,14 @@ Search for tasks by keyword.
 
 ---
 
-### 9. Exiting the Program
+### 9. View Schedule
+View tasks scheduled on a specific date.
+- **Format:** `view <date>`
+- **Example:** `view 20-09-2025`
+
+---
+
+### 10. Exiting the Program
 Close the application.
 - **Format:** `bye`
 
@@ -125,6 +133,7 @@ Close the application.
 | Unmark Task   | `unmark <task number>` e.g., `unmark 1` |
 | Delete Task   | `delete <task number>` e.g., `delete 1` |
 | Find Tasks    | `find <keyword>` e.g., `find assignment` |
+| View Schedule | `view <date>` e.g., `view 20-09-2025 |
 | Exit          | `bye` |
 
 ---
