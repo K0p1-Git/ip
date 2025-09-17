@@ -13,6 +13,18 @@ src/main/resources/docs/
 *.iml
 bin/
 
+# Text UI test outputs
 /text-ui-test/ACTUAL.TXT
-text-ui-test/EXPECTED-UNIX.TXT
+/text-ui-test/EXPECTED-UNIX.TXT
+
+# Data files
 /data/
+
+# Ruby / Jekyll / Bundler
+/vendor/        # Bundler installs gems here (if configured)
+.bundle/        # Bundler config
+Gemfile.lock    # Lock file
+.sass-cache/    # Sass cache
+.jekyll-cache/  # Jekyll cache
+.jekyll-metadata
+_site/          # Jekyll build output
