@@ -31,7 +31,7 @@ ChattyBot works via both:
 - (Optional) [Gradle](https://gradle.org/) if you want to build from source
 
 ### Running from JAR
-1. Download the latest release from the [Releases page](https://github.com/K0p1-Git/releases).
+1. Download the latest release from the [Releases page](https://github.com/K0p1-Git/ip/releases).
 2. Run:
    ```bash
    java -jar Chatty.jar

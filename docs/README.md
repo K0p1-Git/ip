@@ -34,7 +34,7 @@ simple **Graphical User Interface (GUI)** for easier interaction.
 ## Quick Start
 
 1. Ensure you have **Java 17 or above** installed on your computer.
-2. Download the latest `Chatty.jar` file from the [releases page](https://github.com/K0p1-Git/releases).
+2. Download the latest `Chatty.jar` file from the [releases page](https://github.com/K0p1-Git/ip/releases).
 3. Place the file in a folder of your choice.
 4. Launch the application by either:
     - Double-clicking the `Chatty.jar` file, **or**
