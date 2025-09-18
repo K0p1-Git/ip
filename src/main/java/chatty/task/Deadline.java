@@ -2,7 +2,9 @@ package chatty.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 import chatty.exceptions.ChattyException;
 import chatty.exceptions.MalformedArgumentsException;
@@ -12,7 +14,12 @@ import chatty.exceptions.MalformedArgumentsException;
  * The deadline is stored as a LocalDateTime object.
  */
 public class Deadline extends Task {
-    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm");
+    private static final DateTimeFormatter FMT = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern("dd-MM-uuuu HHmm")
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
+
     private final LocalDateTime by;
 
     /**
@@ -32,7 +39,8 @@ public class Deadline extends Task {
         try {
             this.by = LocalDateTime.parse(by, FMT);
         } catch (DateTimeParseException e) {
-            throw new MalformedArgumentsException("deadline <desc> /by dd-MM-yyyy HHmm");
+            throw new MalformedArgumentsException(
+                    "deadline <desc> /by dd-MM-yyyy HHmm");
         }
     }
 

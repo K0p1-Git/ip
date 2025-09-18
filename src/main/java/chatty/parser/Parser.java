@@ -53,15 +53,25 @@ public class Parser {
      * @see String#trim()
      */
     public static int parseIndexOrThrow(String s, int size) throws ChattyException {
-        if (s == null || s.isEmpty()) {
-            throw new ChattyException("Task number is missing.");
+        if (s == null || s.isBlank()) {
+            // wrong arity: none supplied
+            throw new MalformedArgumentsException("Provide exactly one task number (e.g., mark 2)");
         }
-        int idx;
+
+        String[] tokens = s.trim().split("\\s+");
+        if (tokens.length != 1) {
+            // wrong arity: too many tokens like "1 2"
+            throw new MalformedArgumentsException("Provide exactly one task number (e.g., mark 2)");
+        }
+
+        final int idx;
         try {
-            idx = Integer.parseInt(s) - 1;
+            int oneBased = Integer.parseInt(tokens[0]);
+            idx = oneBased - 1; // convert to 0-based
         } catch (NumberFormatException ex) {
-            throw new ChattyException("Task number must be an integer.");
+            throw new MalformedArgumentsException("Task number must be an integer (e.g., mark 2)");
         }
+
         if (idx < 0 || idx >= size) {
             throw new ChattyException("Task number out of range.");
         }

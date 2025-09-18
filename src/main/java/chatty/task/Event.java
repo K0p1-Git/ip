@@ -2,7 +2,9 @@ package chatty.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 import chatty.exceptions.ChattyException;
 import chatty.exceptions.MalformedArgumentsException;
@@ -14,7 +16,12 @@ import chatty.exceptions.MalformedArgumentsException;
  * The Event class extends the Task class.
  */
 public class Event extends Task {
-    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm");
+    private static final DateTimeFormatter FMT = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern("dd-MM-uuuu HHmm")
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
+
     private final LocalDateTime from;
     private final LocalDateTime to;
 
@@ -35,10 +42,20 @@ public class Event extends Task {
     public Event(String description, String from, String to) throws ChattyException {
         super(description);
         try {
-            this.from = LocalDateTime.parse(from, FMT);
-            this.to = LocalDateTime.parse(to, FMT);
+            LocalDateTime start = LocalDateTime.parse(from, FMT);
+            LocalDateTime end   = LocalDateTime.parse(to, FMT);
+
+            // Enforce ordering only: end must NOT be before start (equal allowed).
+            if (end.isBefore(start)) {
+                throw new MalformedArgumentsException(
+                        "/to must not be before /from (dd-MM-yyyy HHmm)");
+            }
+
+            this.from = start;
+            this.to = end;
         } catch (DateTimeParseException e) {
-            throw new MalformedArgumentsException("event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
+            throw new MalformedArgumentsException(
+                    "event <desc> /from dd-MM-yyyy HHmm /to dd-MM-yyyy HHmm");
         }
     }
 

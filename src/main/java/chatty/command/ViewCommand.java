@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,7 +18,11 @@ import chatty.ui.Ui;
 
 /** Command to view a day's schedule (morning to night). */
 public final class ViewCommand implements Command {
-    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter DATE_FMT = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .appendPattern("dd-MM-uuuu")
+            .toFormatter()
+            .withResolverStyle(ResolverStyle.STRICT);
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HHmm");
 
     private final LocalDate day;

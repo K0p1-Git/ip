@@ -60,14 +60,14 @@ Add a simple task without a date or time.
 Add a task with a specific deadline.
 
 - **Format:** `deadline <description> /by <date> <time>`
-- **Example:** `deadline Submit assignment /by 2024-10-15 2359`
+- **Example:** `deadline Submit assignment /by 10-10-2024 2359`
 
 ---
 
 ### 3. Adding Events
 Add a task with a start and end time.
 - **Format:** `event <description> /from <start> /to <end>`
-- **Example:** `event Team meeting /from 2024-10-15 1400 /to 2024-10-15 1600`
+- **Example:** `event Team meeting /from 10-10-2024 1400 /to 10-10-2024 1600`
 
 ---
 
@@ -123,17 +123,17 @@ Close the application.
 
 ## Command Summary
 
-| Action        | Format, Examples |
-|---------------|------------------|
-| Add Todo      | `todo <description>` e.g., `todo read book` |
-| Add Deadline  | `deadline <description> /by <date>` e.g., `deadline submit report /by 2024-02-28` |
-| Add Event     | `event <description> /from <start> /to <end>` e.g., `event project meeting /from 2pm /to 4pm` |
-| List Tasks    | `list` |
-| Mark Task     | `mark <task number>` e.g., `mark 1` |
-| Unmark Task   | `unmark <task number>` e.g., `unmark 1` |
-| Delete Task   | `delete <task number>` e.g., `delete 1` |
-| Find Tasks    | `find <keyword>` e.g., `find assignment` |
-| View Schedule | `view <date>` e.g., `view 20-09-2025 |
-| Exit          | `bye` |
+| Action        | Format, Examples                                                                                                      |
+|---------------|-----------------------------------------------------------------------------------------------------------------------|
+| Add Todo      | `todo <description>` e.g., `todo read book`                                                                           |
+| Add Deadline  | `deadline <description> /by <date>` e.g., `deadline submit report /by 10-10-2024`                                     |
+| Add Event     | `event <description> /from <start> /to <end>` e.g., `event project meeting /from 10-10-2024 2000 /to 10-10-2024 2200` |
+| List Tasks    | `list`                                                                                                                |
+| Mark Task     | `mark <task number>` e.g., `mark 1`                                                                                   |
+| Unmark Task   | `unmark <task number>` e.g., `unmark 1`                                                                               |
+| Delete Task   | `delete <task number>` e.g., `delete 1`                                                                               |
+| Find Tasks    | `find <keyword>` e.g., `find assignment`                                                                              |
+| View Schedule | `view <date>` e.g., `view 20-09-2025`                                                                                 |
+| Exit          | `bye`                                                                                                                 |
 
 ---

@@ -34,5 +34,5 @@ ChattyBot works via both:
 1. Download the latest release from the [Releases page](https://github.com/K0p1-Git/releases).
 2. Run:
    ```bash
-   java -jar ChattyBot.jar
+   java -jar Chatty.jar
     ```

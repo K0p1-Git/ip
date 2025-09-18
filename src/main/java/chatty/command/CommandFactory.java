@@ -2,7 +2,9 @@ package chatty.command;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 import chatty.exceptions.ChattyException;
 import chatty.exceptions.EmptyDescriptionException;
@@ -13,7 +15,12 @@ import chatty.task.TaskList;
 /** Factory class for creating Command objects. */
 public final class CommandFactory {
 
-    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter DATE_FMT =
+            new DateTimeFormatterBuilder()
+                    .parseCaseInsensitive()
+                    .appendPattern("dd-MM-uuuu")
+                    .toFormatter()
+                    .withResolverStyle(ResolverStyle.STRICT);
 
     /** Private constructor to prevent instantiation. */
     private CommandFactory() {}
