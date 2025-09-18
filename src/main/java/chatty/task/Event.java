@@ -43,7 +43,7 @@ public class Event extends Task {
         super(description);
         try {
             LocalDateTime start = LocalDateTime.parse(from, FMT);
-            LocalDateTime end   = LocalDateTime.parse(to, FMT);
+            LocalDateTime end = LocalDateTime.parse(to, FMT);
 
             // Enforce ordering only: end must NOT be before start (equal allowed).
             if (end.isBefore(start)) {
